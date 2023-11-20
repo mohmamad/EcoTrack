@@ -16,5 +16,9 @@ namespace EcoTrack.PL.Repositories.Users
            await _dbContext.Users.AddAsync(user);
         }
 
+        public Task<User> GetUserById(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

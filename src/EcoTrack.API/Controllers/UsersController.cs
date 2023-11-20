@@ -24,11 +24,14 @@ namespace EcoTrack.API.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
-        public async Task<IActionResult<UserDto>> GetUser(int userId)
-        {
+        //[HttpGet]
+        //public async Task<IActionResult<UserDto>> GetUser(int userId)
+        //{
+        //    return Ok(new UserDto
+        //    {
 
-        }
+        //    });
+        //}
 
         [HttpPost]
         public async Task<IActionResult> AddUser(UserDto userDto)
