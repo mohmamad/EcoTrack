@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EcoTrack.API.Dtos;
 using EcoTrack.BL.Services.Users;
+using EcoTrack.BL.Services.Users.Interfaces;
 using EcoTrack.PL.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,11 +11,11 @@ namespace EcoTrack.API.Controllers
     [Route("api/users")]
     public class UsersController : Controller
     {
-        private readonly UsersService _usersService;
+        private readonly IUsersService _usersService;
         private readonly IMapper _mapper;
         private readonly ILogger<UsersController> _logger;  
         public UsersController(
-            UsersService usersService,
+            IUsersService usersService,
             IMapper mapper,
             ILogger<UsersController> logger
             ) 
@@ -24,23 +25,19 @@ namespace EcoTrack.API.Controllers
             _logger = logger;
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult<UserDto>> GetUser(int userId)
-        //{
-        //    return Ok(new UserDto
-        //    {
-
-        //    });
-        //}
-
-        [HttpPost]
-        public async Task<IActionResult> AddUser(UserDto userDto)
+        [HttpGet("{userId}")]
+        public async Task<ActionResult<UserDto>> GetUserById(int userId)
         {
-            var user = _mapper.Map<UserDto, User>(userDto);
+            var user = await _usersService.GetUserById(userId);
 
-            await _usersService.AddUserAsync(user);
+            if(user == null) 
+            {
+                return NotFound();
+            }
 
-            return Ok(user);
+            var userDto = _mapper.Map<UserDto>(user);
+
+            return Ok(userDto);
         }
     }
 }

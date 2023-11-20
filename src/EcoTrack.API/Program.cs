@@ -1,4 +1,5 @@
 using EcoTrack.BL.Services.Users;
+using EcoTrack.BL.Services.Users.Interfaces;
 using EcoTrack.PL;
 using EcoTrack.PL.Repositories.Users;
 using EcoTrack.PL.Repositories.Users.Interface;
@@ -26,7 +27,7 @@ builder.Services.AddDbContext<EcoTrackDBContext>(options =>
     options.UseMySql(mysqlConnection, ServerVersion.AutoDetect(mysqlConnection));
 });
 builder.Services.AddScoped<IUserRepository, SqlUserRepository>();
-builder.Services.AddTransient<UsersService>();
+builder.Services.AddTransient<IUsersService, UsersService>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 var app = builder.Build();

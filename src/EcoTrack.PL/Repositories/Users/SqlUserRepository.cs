@@ -1,5 +1,6 @@
 ﻿using EcoTrack.PL.Entities;
 using EcoTrack.PL.Repositories.Users.Interface;
+using Microsoft.EntityFrameworkCore;
 
 namespace EcoTrack.PL.Repositories.Users
 {
@@ -16,9 +17,13 @@ namespace EcoTrack.PL.Repositories.Users
            await _dbContext.Users.AddAsync(user);
         }
 
-        public Task<User> GetUserById(int id)
+        public async Task<User?> GetUserById(int id)
         {
-            throw new NotImplementedException();
+            return    
+            await _dbContext.Users
+                .Include(u=>u.Location)
+                .Where(u => u.UserId == id)
+                .FirstOrDefaultAsync();
         }
     }
 }
