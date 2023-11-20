@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using EcoTrack.API.Dtos;
-using EcoTrack.BL.Services;
+using EcoTrack.BL.Services.Users;
 using EcoTrack.PL.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,7 +22,14 @@ namespace EcoTrack.API.Controllers
             _usersService = usersService;
             _mapper = mapper;
             _logger = logger;
-        }    
+        }
+
+        [HttpGet]
+        public async Task<IActionResult<UserDto>> GetUser(int userId)
+        {
+
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddUser(UserDto userDto)
         {
