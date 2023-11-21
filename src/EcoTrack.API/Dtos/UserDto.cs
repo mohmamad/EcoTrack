@@ -9,7 +9,6 @@
         public string Email { get; set; } 
         public LocationDto Location { get; set; }
         public DateTime BirthDate { get; set; }
-        public bool Deleted { get; set; }
 
     }
 }

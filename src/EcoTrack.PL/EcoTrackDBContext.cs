@@ -63,7 +63,7 @@ namespace EcoTrack.PL
                         Email="morsee@egy.pt",
                         FirstName="Mer'e",
                         LastName="Pharaoh",
-                        Deleteed=false,
+                        Deleted=false,
                         BirthDate=DateTime.Now,
                         LocationId= -10,
                         
@@ -76,7 +76,7 @@ namespace EcoTrack.PL
                         Email = "moghrabi@egy.pt",
                         FirstName = "Sal",
                         LastName = "Tan",
-                        Deleteed = false,
+                        Deleted = false,
                         BirthDate = DateTime.Now,
                         LocationId = -8
                     }

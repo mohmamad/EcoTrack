@@ -9,6 +9,7 @@ namespace EcoTrack.API.Profiles
         public LocationProfile()
         {
             CreateMap<Location, LocationDto>();
+            CreateMap<LocationDto, Location >();
         }
     }
 }

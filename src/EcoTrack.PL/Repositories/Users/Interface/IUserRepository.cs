@@ -6,5 +6,7 @@ namespace EcoTrack.PL.Repositories.Users.Interface
     {
         public Task AddUserAsync(User user);
         public Task<User?> GetUserById(int id);
+        public Task AddUser(User user);
+        public Task<bool> IsFoundByUsername(string username);
     }
 }

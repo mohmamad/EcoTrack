@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EcoTrack.API.Dtos;
+using EcoTrack.BL.Exceptions;
 using EcoTrack.BL.Services.Users;
 using EcoTrack.BL.Services.Users.Interfaces;
 using EcoTrack.PL.Entities;
@@ -38,6 +39,29 @@ namespace EcoTrack.API.Controllers
             var userDto = _mapper.Map<UserDto>(user);
 
             return Ok(userDto);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<UserDto>> AddUser(UserRegistrationDto userRegistrationDto)
+        {
+            var user = _mapper.Map<User>(userRegistrationDto);
+            try
+            {
+                await _usersService.AddUser(user);
+            }
+            catch(UsernameUsedException e)
+            {
+                return Conflict(new
+                                    {
+                                        message= e.Message
+                                    });
+            }
+            catch(Exception e)
+            {
+                _logger.LogError(e, "Error on adding a user");
+                return StatusCode(500, "Internal Server Error.");
+            }
+            return NoContent();
         }
     }
 }

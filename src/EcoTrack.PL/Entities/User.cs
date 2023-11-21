@@ -1,6 +1,6 @@
 ﻿namespace EcoTrack.PL.Entities
 {
-    //Example
+
     public class User
     {
         public long UserId { get; set; }    
@@ -12,7 +12,7 @@
         public Location Location { set; get; }
         public DateTime BirthDate { get; set; }
         public string Email { set; get; }
-        public bool Deleteed { set; get; }
+        public bool Deleted { set; get; }
 
     }
 }
