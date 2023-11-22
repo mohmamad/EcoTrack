@@ -15,5 +15,6 @@ namespace EcoTrack.BL.Services.Users.Interfaces
             int page
             );
         public Task<bool> SaveChangesAsync();
+        public Task DeleteUserAsync(long id);
     }
 }

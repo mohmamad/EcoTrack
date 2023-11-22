@@ -50,5 +50,15 @@ namespace EcoTrack.BL.Services.Users
         {
             return await _userRepository.SaveChangesAsync();
         }
+
+        public async Task DeleteUserAsync(long id)
+        {
+            var isFound = await _userRepository.IsFoundByUserIdAsync(id);
+            if (!isFound)
+            {
+                throw new NotFoundUserException($"User with {id} id not found.");
+            }
+            await _userRepository.DeleteUserAsync(id);
+        }
     }
 }

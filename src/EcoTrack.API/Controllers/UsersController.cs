@@ -114,5 +114,27 @@ namespace EcoTrack.API.Controllers
             }
             return NoContent();
         }
+        [HttpDelete("{userId}")]
+        public async Task<ActionResult> DeleteUser(int userId)
+        {
+            //TODO-POLICY: Just authorized/admins users can delete.
+            try
+            {
+                await _usersService.DeleteUserAsync(userId);
+            }
+            catch (NotFoundUserException e)
+            {
+                return NotFound(new
+                {
+                    Message = e.Message
+                });
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, $"Error deleting a user with {userId} id.");
+                return StatusCode(500, "Internal Server Error.");
+            }
+            return NoContent();
+        }
     }
 }

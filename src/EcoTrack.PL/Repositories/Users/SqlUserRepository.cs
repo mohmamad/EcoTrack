@@ -71,5 +71,19 @@ namespace EcoTrack.PL.Repositories.Users
         {
             return await _dbContext.SaveChangesAsync() > 0;
         }
+
+        public async Task DeleteUserAsync(long userId)
+        {
+            _dbContext.Users.Remove(new User 
+            {
+                UserId= userId 
+            }
+            );
+            await _dbContext.SaveChangesAsync();
+        }
+        public async Task<bool> IsFoundByUserIdAsync(long userId)
+        {
+            return await _dbContext.Users.AnyAsync(u => u.UserId == userId);
+        }
     }
 }
