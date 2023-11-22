@@ -66,5 +66,10 @@ namespace EcoTrack.PL.Repositories.Users
                 .ToListAsync();
 
         }
+
+        public async Task<bool> SaveChangesAsync()
+        {
+            return await _dbContext.SaveChangesAsync() > 0;
+        }
     }
 }

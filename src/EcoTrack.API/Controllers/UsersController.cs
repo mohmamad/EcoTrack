@@ -3,6 +3,7 @@ using EcoTrack.API.Dtos;
 using EcoTrack.BL.Exceptions;
 using EcoTrack.BL.Services.Users.Interfaces;
 using EcoTrack.PL.Entities;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EcoTrack.API.Controllers
@@ -37,6 +38,7 @@ namespace EcoTrack.API.Controllers
         {
             //TODO-POLICY:retrieve just followed user.??X
             //TODO-POLICY:Admin can get all.
+            //TODO: Return pagination metadata.
 
             var users = await _usersService.GetAllUsersAsync(firstName, lastName, cityName, countryName, pageSize, page);
             var usersDto = _mapper.Map<IEnumerable<UserDto>>( users );
@@ -57,6 +59,36 @@ namespace EcoTrack.API.Controllers
             var userDto = _mapper.Map<UserDto>(user);
 
             return Ok(userDto);
+        }
+
+        [HttpPatch("{userId}")]
+        public async Task<ActionResult> PartiallyUpdateUser
+            (
+                int userId,
+                JsonPatchDocument<UserDtoForUpdate> userJsonPatch
+            )
+        {
+            //TODO-POLICY: User can update just himself.
+            var user = await _usersService.GetUserByIdAsync(userId);
+
+            if(user == null)
+            {
+                return NotFound();
+            }
+            var userDtoForUpdate = _mapper.Map<UserDtoForUpdate>(user);
+            userJsonPatch.ApplyTo(userDtoForUpdate, ModelState);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if(!TryValidateModel(userDtoForUpdate))
+            {
+                return BadRequest(ModelState);
+            }
+
+            _mapper.Map(userDtoForUpdate, user);
+            await _usersService.SaveChangesAsync();
+            return NoContent();
         }
 
         [HttpPost]

@@ -45,5 +45,10 @@ namespace EcoTrack.BL.Services.Users
                 pageSize,
                 page);
         }
+
+        public async Task<bool> SaveChangesAsync()
+        {
+            return await _userRepository.SaveChangesAsync();
+        }
     }
 }

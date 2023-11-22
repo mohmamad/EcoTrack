@@ -14,5 +14,6 @@ namespace EcoTrack.BL.Services.Users.Interfaces
             int pageSize,
             int page
             );
+        public Task<bool> SaveChangesAsync();
     }
 }
