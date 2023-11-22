@@ -5,6 +5,7 @@ using EcoTrack.PL.Repositories.Users;
 using EcoTrack.PL.Repositories.Users.Interface;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using System.Security.Cryptography;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,7 +33,7 @@ builder.Services.AddDbContext<EcoTrackDBContext>(options =>
 });
 builder.Services.AddScoped<IUserRepository, SqlUserRepository>();
 builder.Services.AddTransient<IUsersService, UsersService>();
-
+builder.Services.AddTransient<HashAlgorithm>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 var app = builder.Build();
 

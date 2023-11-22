@@ -2,6 +2,8 @@
 using EcoTrack.BL.Services.Users.Interfaces;
 using EcoTrack.PL.Entities;
 using EcoTrack.PL.Repositories.Users.Interface;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace EcoTrack.BL.Services.Users
 {
@@ -13,6 +15,13 @@ namespace EcoTrack.BL.Services.Users
             _userRepository = userRepository;
         }
 
+        private static string HashPassword(string input)
+        {
+            var hasher = SHA256.Create();
+            var hashedPassword =  hasher.ComputeHash(Encoding.UTF8.GetBytes(input));
+            return Encoding.UTF8.GetString(hashedPassword);
+        }
+
         public async Task AddUserAsync(User user)
         {
            var found= await _userRepository.IsFoundByUsernameAsync(user.Username);
@@ -20,6 +29,7 @@ namespace EcoTrack.BL.Services.Users
             {
                 throw new UsernameUsedException($"{user.Username} already used.");
             }
+            user.Password= HashPassword(user.Password);
             await _userRepository.AddUserAsync(user);
         }
 
