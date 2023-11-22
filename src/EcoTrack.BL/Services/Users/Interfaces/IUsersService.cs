@@ -4,7 +4,15 @@ namespace EcoTrack.BL.Services.Users.Interfaces
 {
     public interface IUsersService
     {
-        public Task<User?> GetUserById(int id);
-        public Task AddUser(User user);
+        public Task<User?> GetUserByIdAsync(int id);
+        public Task AddUserAsync(User user);
+        public Task<IEnumerable<User>> GetAllUsersAsync( 
+            string? firstName,
+            string? lastName,
+            string? cityName,
+            string? countryName,
+            int pageSize,
+            int page
+            );
     }
 }

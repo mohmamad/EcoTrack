@@ -12,10 +12,6 @@ namespace EcoTrack.PL.Repositories.Users
             _dbContext = dBContext;
         }
 
-        public async Task AddUserAsync(User user)
-        {
-           await _dbContext.Users.AddAsync(user);
-        }
 
         public async Task<User?> GetUserById(int id)
         {
@@ -26,16 +22,49 @@ namespace EcoTrack.PL.Repositories.Users
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<bool> IsFoundByUsername(string username)
+        public async Task<bool> IsFoundByUsernameAsync(string username)
         {
             return await _dbContext.Users.AnyAsync(u=> u.Username == username);
         }
 
-        public async Task AddUser(User user)
+        public async Task AddUserAsync(User user)
         {
             await _dbContext.Users.AddAsync(user);
             await _dbContext.SaveChangesAsync();    
         }
 
+        public async Task<IEnumerable<User>> GetAllUsersAsync(
+            string? firstName,
+            string? lastName,
+            string? cityName,
+            string? countryName,
+            int pageSize,
+            int page)
+        {
+            IQueryable<User> userQuery = _dbContext.Users.Include(u=> u.Location);
+
+            if(firstName != null)
+            {
+               userQuery= userQuery.Where(u => u.FirstName.ToLower() == firstName);
+            }
+            if(lastName != null)
+            {
+                userQuery = userQuery.Where(u=> u.LastName.ToLower() == lastName);    
+            }
+            if(cityName != null)
+            {
+                userQuery = userQuery.Where(u=> u.Location.CityName.ToLower() == cityName);
+            }
+            if(countryName != null) 
+            {
+                userQuery = userQuery.Where(u=> u.Location.CountryName.ToLower() == countryName);
+            }
+
+            return await userQuery
+                .Skip((page-1)*pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+        }
     }
 }

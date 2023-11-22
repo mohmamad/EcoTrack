@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using EcoTrack.API.Dtos;
 using EcoTrack.BL.Exceptions;
-using EcoTrack.BL.Services.Users;
 using EcoTrack.BL.Services.Users.Interfaces;
 using EcoTrack.PL.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -26,10 +25,29 @@ namespace EcoTrack.API.Controllers
             _logger = logger;
         }
 
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsers(
+            [FromQuery] string? firstName,
+            [FromQuery] string? lastName,
+            [FromQuery] string? cityName,
+            [FromQuery] string? countryName,
+            [FromQuery] int pageSize = 30,
+            [FromQuery] int page= 1
+            )
+        {
+            //TODO-POLICY:retrieve just followed user.??X
+            //TODO-POLICY:Admin can get all.
+
+            var users = await _usersService.GetAllUsersAsync(firstName, lastName, cityName, countryName, pageSize, page);
+            var usersDto = _mapper.Map<IEnumerable<UserDto>>( users );
+
+            return Ok( usersDto );
+        }
+
         [HttpGet("{userId}")]
         public async Task<ActionResult<UserDto>> GetUserById(int userId)
         {
-            var user = await _usersService.GetUserById(userId);
+            var user = await _usersService.GetUserByIdAsync(userId);
 
             if(user == null) 
             {
@@ -44,10 +62,11 @@ namespace EcoTrack.API.Controllers
         [HttpPost]
         public async Task<ActionResult<UserDto>> AddUser(UserRegistrationDto userRegistrationDto)
         {
+            //TODO: add validation attributes on the UserRegistrationDto
             var user = _mapper.Map<User>(userRegistrationDto);
             try
             {
-                await _usersService.AddUser(user);
+                await _usersService.AddUserAsync(user);
             }
             catch(UsernameUsedException e)
             {

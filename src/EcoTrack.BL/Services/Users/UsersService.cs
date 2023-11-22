@@ -13,22 +13,37 @@ namespace EcoTrack.BL.Services.Users
             _userRepository = userRepository;
         }
 
-        public async Task AddUser(User user)
+        public async Task AddUserAsync(User user)
         {
-           var found= await _userRepository.IsFoundByUsername(user.Username);
+           var found= await _userRepository.IsFoundByUsernameAsync(user.Username);
             if (found)
             {
                 throw new UsernameUsedException($"{user.Username} already used.");
             }
-            await _userRepository.AddUser(user);
+            await _userRepository.AddUserAsync(user);
         }
 
-        public async Task<User?> GetUserById(int id)
+        public async Task<User?> GetUserByIdAsync(int id)
         {
             return await _userRepository.GetUserById(id);
         }
 
-
-
+        public async Task<IEnumerable<User>> GetAllUsersAsync(
+            string? firstName,
+            string? lastName,
+            string? cityName,
+            string? countryName,
+            int pageSize,
+            int page)
+        {
+            pageSize = Math.Min(pageSize, 30);
+            return await _userRepository.GetAllUsersAsync( 
+                firstName?.ToLower(),
+                lastName?.ToLower(),
+                cityName?.ToLower(),
+                countryName?.ToLower(),
+                pageSize,
+                page);
+        }
     }
 }
