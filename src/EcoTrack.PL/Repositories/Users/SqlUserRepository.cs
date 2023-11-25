@@ -85,5 +85,12 @@ namespace EcoTrack.PL.Repositories.Users
         {
             return await _dbContext.Users.AnyAsync(u => u.UserId == userId);
         }
+
+        public async Task<User?> GetUserByCredentials(string username, string password)
+        {
+            return await _dbContext.Users
+                .Where(u => u.Password == password && u.Username == username)
+                .FirstOrDefaultAsync();
+        }
     }
 }

@@ -70,5 +70,12 @@ namespace EcoTrack.BL.Services.Users
             }
             await _userRepository.DeleteUserAsync(id);
         }
+
+        public Task<User?> GetUserByCredentials(string username, string password)
+        {
+            var hashedPassword = HashPassword(password);
+            var user = _userRepository.GetUserByCredentials(username, hashedPassword);
+            return user;
+        }
     }
 }

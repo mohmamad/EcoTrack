@@ -33,7 +33,6 @@ builder.Services.AddDbContext<EcoTrackDBContext>(options =>
 });
 builder.Services.AddScoped<IUserRepository, SqlUserRepository>();
 builder.Services.AddTransient<IUsersService, UsersService>();
-builder.Services.AddTransient<HashAlgorithm>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 var app = builder.Build();
 
