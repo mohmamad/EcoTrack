@@ -3,6 +3,7 @@ using System;
 using EcoTrack.PL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EcoTrack.PL.Migrations
 {
     [DbContext(typeof(EcoTrackDBContext))]
-    partial class EcoTrackDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231120142735_users_and_locations")]
+    partial class usersandlocations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,32 +39,6 @@ namespace EcoTrack.PL.Migrations
                     b.HasKey("LocationId");
 
                     b.ToTable("Locations");
-
-                    b.HasData(
-                        new
-                        {
-                            LocationId = -10L,
-                            CityName = "Nablus",
-                            CountryName = "Palestine"
-                        },
-                        new
-                        {
-                            LocationId = -9L,
-                            CityName = "Jenin",
-                            CountryName = "Palestine"
-                        },
-                        new
-                        {
-                            LocationId = -8L,
-                            CityName = "Tokyo",
-                            CountryName = "Japan"
-                        },
-                        new
-                        {
-                            LocationId = -7L,
-                            CityName = "Seoul",
-                            CountryName = "North Korea"
-                        });
                 });
 
             modelBuilder.Entity("EcoTrack.PL.Entities.User", b =>
@@ -73,7 +50,7 @@ namespace EcoTrack.PL.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<bool>("Deleted")
+                    b.Property<bool>("Deleteed")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Email")
@@ -104,32 +81,6 @@ namespace EcoTrack.PL.Migrations
                     b.HasIndex("LocationId");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = -10L,
-                            BirthDate = new DateTime(2023, 11, 21, 13, 28, 19, 135, DateTimeKind.Local).AddTicks(3414),
-                            Deleted = false,
-                            Email = "morsee@egy.pt",
-                            FirstName = "Mer'e",
-                            LastName = "Pharaoh",
-                            LocationId = -10L,
-                            Password = "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
-                            Username = "morse"
-                        },
-                        new
-                        {
-                            UserId = -9L,
-                            BirthDate = new DateTime(2023, 11, 21, 13, 28, 19, 135, DateTimeKind.Local).AddTicks(3463),
-                            Deleted = false,
-                            Email = "moghrabi@egy.pt",
-                            FirstName = "Sal",
-                            LastName = "Tan",
-                            LocationId = -8L,
-                            Password = "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
-                            Username = "mohammad"
-                        });
                 });
 
             modelBuilder.Entity("EcoTrack.PL.Entities.User", b =>

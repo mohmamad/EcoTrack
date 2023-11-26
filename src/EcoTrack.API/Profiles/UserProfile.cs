@@ -8,7 +8,10 @@ namespace EcoTrack.API.Profiles
     {
         public UserProfile() 
         {
+            CreateMap<User, UserDto>();
             CreateMap<UserDto, User>();
+            CreateMap<User, UserDtoForUpdate>();
+            CreateMap< UserDtoForUpdate, User>();
         }
     }
 }

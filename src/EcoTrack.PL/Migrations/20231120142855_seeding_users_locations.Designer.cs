@@ -3,6 +3,7 @@ using System;
 using EcoTrack.PL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EcoTrack.PL.Migrations
 {
     [DbContext(typeof(EcoTrackDBContext))]
-    partial class EcoTrackDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231120142855_seeding_users_locations")]
+    partial class seedinguserslocations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,7 +76,7 @@ namespace EcoTrack.PL.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<bool>("Deleted")
+                    b.Property<bool>("Deleteed")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Email")
@@ -109,8 +112,8 @@ namespace EcoTrack.PL.Migrations
                         new
                         {
                             UserId = -10L,
-                            BirthDate = new DateTime(2023, 11, 21, 13, 28, 19, 135, DateTimeKind.Local).AddTicks(3414),
-                            Deleted = false,
+                            BirthDate = new DateTime(2023, 11, 20, 16, 28, 55, 174, DateTimeKind.Local).AddTicks(9656),
+                            Deleteed = false,
                             Email = "morsee@egy.pt",
                             FirstName = "Mer'e",
                             LastName = "Pharaoh",
@@ -121,8 +124,8 @@ namespace EcoTrack.PL.Migrations
                         new
                         {
                             UserId = -9L,
-                            BirthDate = new DateTime(2023, 11, 21, 13, 28, 19, 135, DateTimeKind.Local).AddTicks(3463),
-                            Deleted = false,
+                            BirthDate = new DateTime(2023, 11, 20, 16, 28, 55, 174, DateTimeKind.Local).AddTicks(9695),
+                            Deleteed = false,
                             Email = "moghrabi@egy.pt",
                             FirstName = "Sal",
                             LastName = "Tan",

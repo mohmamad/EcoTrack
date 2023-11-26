@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using EcoTrack.API.Dtos;
-using EcoTrack.BL.Services;
+using EcoTrack.BL.Exceptions;
+using EcoTrack.BL.Services.Users.Interfaces;
 using EcoTrack.PL.Entities;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EcoTrack.API.Controllers
@@ -10,11 +12,11 @@ namespace EcoTrack.API.Controllers
     [Route("api/users")]
     public class UsersController : Controller
     {
-        private readonly UsersService _usersService;
+        private readonly IUsersService _usersService;
         private readonly IMapper _mapper;
         private readonly ILogger<UsersController> _logger;  
         public UsersController(
-            UsersService usersService,
+            IUsersService usersService,
             IMapper mapper,
             ILogger<UsersController> logger
             ) 
@@ -22,15 +24,117 @@ namespace EcoTrack.API.Controllers
             _usersService = usersService;
             _mapper = mapper;
             _logger = logger;
-        }    
-        [HttpPost]
-        public async Task<IActionResult> AddUser(UserDto userDto)
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsers(
+            [FromQuery] string? firstName,
+            [FromQuery] string? lastName,
+            [FromQuery] string? cityName,
+            [FromQuery] string? countryName,
+            [FromQuery] int pageSize = 30,
+            [FromQuery] int page= 1
+            )
         {
-            var user = _mapper.Map<UserDto, User>(userDto);
+            //TODO-POLICY:retrieve just followed user.??X
+            //TODO-POLICY:Admin can get all.
+            //TODO: Return pagination metadata.
 
-            await _usersService.AddUserAsync(user);
+            var users = await _usersService.GetAllUsersAsync(firstName, lastName, cityName, countryName, pageSize, page);
+            var usersDto = _mapper.Map<IEnumerable<UserDto>>( users );
 
-            return Ok(user);
+            return Ok( usersDto );
+        }
+
+        [HttpGet("{userId}")]
+        public async Task<ActionResult<UserDto>> GetUserById(int userId)
+        {
+            var user = await _usersService.GetUserByIdAsync(userId);
+
+            if(user == null) 
+            {
+                return NotFound();
+            }
+
+            var userDto = _mapper.Map<UserDto>(user);
+
+            return Ok(userDto);
+        }
+
+        [HttpPatch("{userId}")]
+        public async Task<ActionResult> PartiallyUpdateUser
+            (
+                int userId,
+                JsonPatchDocument<UserDtoForUpdate> userJsonPatch
+            )
+        {
+            //TODO-POLICY: User can update just himself.
+            var user = await _usersService.GetUserByIdAsync(userId);
+
+            if(user == null)
+            {
+                return NotFound();
+            }
+            var userDtoForUpdate = _mapper.Map<UserDtoForUpdate>(user);
+            userJsonPatch.ApplyTo(userDtoForUpdate, ModelState);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if(!TryValidateModel(userDtoForUpdate))
+            {
+                return BadRequest(ModelState);
+            }
+
+            _mapper.Map(userDtoForUpdate, user);
+            await _usersService.SaveChangesAsync();
+            return NoContent();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<UserDto>> AddUser(UserRegistrationDto userRegistrationDto)
+        {
+            //TODO: add validation attributes on the UserRegistrationDto
+            var user = _mapper.Map<User>(userRegistrationDto);
+            try
+            {
+                await _usersService.AddUserAsync(user);
+            }
+            catch(UsernameUsedException e)
+            {
+                return Conflict(new
+                                    {
+                                        message= e.Message
+                                    });
+            }
+            catch(Exception e)
+            {
+                _logger.LogError(e, "Error on adding a user");
+                return StatusCode(500, "Internal Server Error.");
+            }
+            return NoContent();
+        }
+        [HttpDelete("{userId}")]
+        public async Task<ActionResult> DeleteUser(int userId)
+        {
+            //TODO-POLICY: Just authorized/admins users can delete.
+            try
+            {
+                await _usersService.DeleteUserAsync(userId);
+            }
+            catch (NotFoundUserException e)
+            {
+                return NotFound(new
+                {
+                    Message = e.Message
+                });
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, $"Error deleting a user with {userId} id.");
+                return StatusCode(500, "Internal Server Error.");
+            }
+            return NoContent();
         }
     }
 }

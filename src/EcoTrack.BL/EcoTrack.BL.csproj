@@ -10,4 +10,8 @@
     <ProjectReference Include="..\EcoTrack.PL\EcoTrack.PL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="MockedRepos\" />
+  </ItemGroup>
+
 </Project>
