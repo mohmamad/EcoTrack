@@ -2,6 +2,7 @@
 using EcoTrack.API.Dtos.EnviromentalReportsTopic;
 using EcoTrack.BL.Services.EnviromentalReports.Interface;
 using EcoTrack.PL.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EcoTrack.API.Controllers
@@ -28,6 +29,7 @@ namespace EcoTrack.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy ="OnlyAdmins")]
         public async Task<ActionResult<EnviromentalReportsTopicDto>> AddTopic(EnviromentalReportsTopicForPostDto topicDto)
         {
             var topic = _mapper.Map<EnviromentalReportsTopic>(topicDto);

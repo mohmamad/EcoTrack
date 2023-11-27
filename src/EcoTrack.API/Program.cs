@@ -57,6 +57,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 Encoding.UTF8.GetBytes(builder.Configuration["Authentication:Key"]))
         };
     });
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("OnlyAdmins", (pb) =>
+    {
+        pb.RequireClaim("role", "2");
+    });
+
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
