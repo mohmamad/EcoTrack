@@ -3,8 +3,11 @@ using EcoTrack.API.Dtos;
 using EcoTrack.BL.Exceptions;
 using EcoTrack.BL.Services.Users.Interfaces;
 using EcoTrack.PL.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters.Xml;
+using System.Security.Claims;
 
 namespace EcoTrack.API.Controllers
 {
@@ -46,6 +49,7 @@ namespace EcoTrack.API.Controllers
             return Ok( usersDto );
         }
 
+        
         [HttpGet("{userId}")]
         public async Task<ActionResult<UserDto>> GetUserById(int userId)
         {
@@ -114,10 +118,18 @@ namespace EcoTrack.API.Controllers
             }
             return NoContent();
         }
+
         [HttpDelete("{userId}")]
+        [Authorize]
         public async Task<ActionResult> DeleteUser(int userId)
         {
-            //TODO-POLICY: Just authorized/admins users can delete.
+            var userRequestedId =long.Parse(User.Claims.FirstOrDefault(c => c.Type.EndsWith("nameidentifier"))!.Value);
+
+            if (userId != userRequestedId)
+            {
+                return Forbid();
+            }
+
             try
             {
                 await _usersService.DeleteUserAsync(userId);

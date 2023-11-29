@@ -11,5 +11,6 @@ namespace EcoTrack.PL.Repositories.Users.Interface
         public Task<bool> SaveChangesAsync();
         public Task DeleteUserAsync(long userId);
         public Task<bool> IsFoundByUserIdAsync(long userId);
+        public Task<User?> GetUserByCredentials(string username, string password);
     }
 }

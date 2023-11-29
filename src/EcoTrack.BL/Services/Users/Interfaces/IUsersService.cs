@@ -16,5 +16,6 @@ namespace EcoTrack.BL.Services.Users.Interfaces
             );
         public Task<bool> SaveChangesAsync();
         public Task DeleteUserAsync(long id);
+        public Task<User?> GetUserByCredentials(string username, string password);
     }
 }
