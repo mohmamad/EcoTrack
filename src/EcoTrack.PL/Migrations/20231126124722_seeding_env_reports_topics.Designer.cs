@@ -3,6 +3,7 @@ using System;
 using EcoTrack.PL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EcoTrack.PL.Migrations
 {
     [DbContext(typeof(EcoTrackDBContext))]
-    partial class EcoTrackDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231126124722_seeding_env_reports_topics")]
+    partial class seedingenvreportstopics
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -157,9 +160,6 @@ namespace EcoTrack.PL.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("UserLevel")
-                        .HasColumnType("int");
-
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -174,27 +174,25 @@ namespace EcoTrack.PL.Migrations
                         new
                         {
                             UserId = -10L,
-                            BirthDate = new DateTime(2023, 11, 27, 21, 12, 0, 967, DateTimeKind.Local).AddTicks(5223),
+                            BirthDate = new DateTime(2023, 11, 26, 14, 47, 22, 528, DateTimeKind.Local).AddTicks(3776),
                             Deleted = false,
                             Email = "morsee@egy.pt",
                             FirstName = "Mer'e",
                             LastName = "Pharaoh",
                             LocationId = -10L,
                             Password = "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
-                            UserLevel = 1,
                             Username = "morse"
                         },
                         new
                         {
                             UserId = -9L,
-                            BirthDate = new DateTime(2023, 11, 27, 21, 12, 0, 967, DateTimeKind.Local).AddTicks(5278),
+                            BirthDate = new DateTime(2023, 11, 26, 14, 47, 22, 528, DateTimeKind.Local).AddTicks(3818),
                             Deleted = false,
                             Email = "moghrabi@egy.pt",
                             FirstName = "Sal",
                             LastName = "Tan",
                             LocationId = -8L,
                             Password = "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
-                            UserLevel = 1,
                             Username = "mohammad"
                         });
                 });

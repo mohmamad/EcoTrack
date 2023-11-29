@@ -1,4 +1,6 @@
-﻿namespace EcoTrack.PL.Entities
+﻿using EcoTrack.PL.Enums;
+
+namespace EcoTrack.PL.Entities
 {
 
     public class User
@@ -13,6 +15,8 @@
         public DateTime BirthDate { get; set; }
         public string Email { set; get; }
         public bool Deleted { set; get; }
+        public UserLevel UserLevel { set; get; } = UserLevel.User;
+        public List<EnviromentalReport> enviromentalReports { set; get; } = new List<EnviromentalReport>();
 
     }
 }

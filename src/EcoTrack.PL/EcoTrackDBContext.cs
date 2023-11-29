@@ -12,12 +12,37 @@ namespace EcoTrack.PL
         public EcoTrackDBContext(DbContextOptions dbContextOptions) : base(dbContextOptions) { }  
         public DbSet<User> Users { get; set; }
         public DbSet<Location> Locations { get; set; }
+        public DbSet<EnviromentalReport> EnviromentalReports { get; set; }
+        public DbSet<EnviromentalReportsTopic> enviromentalReportsTopics { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             SeedingLocations(modelBuilder);
             SeedingUsers(modelBuilder);
-        }       
+            SeedingEnviromentalReportsTopics(modelBuilder);
+        }
+
+        private void SeedingEnviromentalReportsTopics(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<EnviromentalReportsTopic>().HasData
+                (
+                    new EnviromentalReportsTopic
+                    {
+                        Id = -3,
+                        Name = "Temperature",
+                    },
+                    new EnviromentalReportsTopic
+                    {
+                        Id = -2,
+                        Name = "Air quality",
+                    },
+                    new EnviromentalReportsTopic
+                    {
+                        Id = -1,
+                        Name = "Water quality",
+                    }
+                );
+        }
 
         private void SeedingLocations(ModelBuilder mb)
         {

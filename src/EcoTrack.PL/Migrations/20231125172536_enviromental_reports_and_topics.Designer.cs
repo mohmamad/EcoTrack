@@ -3,6 +3,7 @@ using System;
 using EcoTrack.PL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EcoTrack.PL.Migrations
 {
     [DbContext(typeof(EcoTrackDBContext))]
-    partial class EcoTrackDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231125172536_enviromental_reports_and_topics")]
+    partial class enviromentalreportsandtopics
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,23 +65,6 @@ namespace EcoTrack.PL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("enviromentalReportsTopics");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = -3L,
-                            Name = "Temperature"
-                        },
-                        new
-                        {
-                            Id = -2L,
-                            Name = "Air quality"
-                        },
-                        new
-                        {
-                            Id = -1L,
-                            Name = "Water quality"
-                        });
                 });
 
             modelBuilder.Entity("EcoTrack.PL.Entities.Location", b =>
@@ -157,9 +143,6 @@ namespace EcoTrack.PL.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("UserLevel")
-                        .HasColumnType("int");
-
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -174,27 +157,25 @@ namespace EcoTrack.PL.Migrations
                         new
                         {
                             UserId = -10L,
-                            BirthDate = new DateTime(2023, 11, 27, 21, 12, 0, 967, DateTimeKind.Local).AddTicks(5223),
+                            BirthDate = new DateTime(2023, 11, 25, 19, 25, 36, 570, DateTimeKind.Local).AddTicks(1488),
                             Deleted = false,
                             Email = "morsee@egy.pt",
                             FirstName = "Mer'e",
                             LastName = "Pharaoh",
                             LocationId = -10L,
                             Password = "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
-                            UserLevel = 1,
                             Username = "morse"
                         },
                         new
                         {
                             UserId = -9L,
-                            BirthDate = new DateTime(2023, 11, 27, 21, 12, 0, 967, DateTimeKind.Local).AddTicks(5278),
+                            BirthDate = new DateTime(2023, 11, 25, 19, 25, 36, 570, DateTimeKind.Local).AddTicks(1536),
                             Deleted = false,
                             Email = "moghrabi@egy.pt",
                             FirstName = "Sal",
                             LastName = "Tan",
                             LocationId = -8L,
                             Password = "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
-                            UserLevel = 1,
                             Username = "mohammad"
                         });
                 });
