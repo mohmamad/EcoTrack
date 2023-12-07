@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EcoTrack.PL.Entities
 {
@@ -10,7 +6,9 @@ namespace EcoTrack.PL.Entities
     {
         public long EnviromentalThresholdId { get; set; }
         public long UserId { get; set; }
-        public int TopicId { get; set; }
+        public User User { get; set; }
+        public long EnviromentalReportsTopicId { get; set; }
+        public EnviromentalReportsTopic EnviromentalReportsTopic { get; set; }
         public double Value { get; set; }
 
     }
